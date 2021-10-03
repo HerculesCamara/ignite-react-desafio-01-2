@@ -1,8 +1,32 @@
-/* import "./styles/content.scss";
-
+import { useEffect, useState } from 'react';
 import { MovieCard } from "../components/MovieCard";
+import { api } from '../services/api';
+
+import "../styles/content.scss";
+import { ExportValues } from './SideBar';
+
+interface MovieProps {
+  imdbID: string;
+  Title: string;
+  Poster: string;
+  Ratings: Array<{
+    Source: string;
+    Value: string;
+  }>;
+  Runtime: string;
+}
+
 
 export function Content() {
+  
+  const [movies, setMovies] = useState<MovieProps[]>([]);
+
+  useEffect(() => {
+    api.get<MovieProps[]>(`movies/?Genre_id=${selectedGenreId}`).then(response => {
+      setMovies(response.data);
+    });
+  }, [selectedGenreId]);
+  return (
   <div className="container">
     <header>
       <span className="category">
@@ -23,6 +47,6 @@ export function Content() {
         ))}
       </div>
     </main>
-  </div>;
+  </div>
+  );
 }
- */
